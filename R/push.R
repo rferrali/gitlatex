@@ -1,5 +1,6 @@
 push <- function(project) {
-  print("pushing")
+  project <- load_project(project)
+  dotenv::load_dot_env()
   # warn
   ## not on main
   ## not on latest commit
@@ -7,23 +8,27 @@ push <- function(project) {
   ## some files in remote are different from local and more recent
   # push
   ## rsync from local, except assets
-  exclude <- sprintf('--exclude="%s"', read_config()$assets)
+  local <- normalizePath(project$local)
+  remote <- normalizePath(Sys.getenv(project$remote))
+  remote_parent_dir <- sprintf("%s/..", remote) |> normalizePath()
+  assets <- normalizePath(read_config()$assets)
+  exclude <- sprintf('--exclude="%s"', basename(read_config()$assets))
   system2(
     "rsync", args = c(
-      "-r", 
+      "-ar", 
       "--delete", 
-      "--exclude" = exclude,
-      project$local,
-      Sys.getenv(project$remote)
+      exclude,
+      local,
+      remote_parent_dir
     )
   )
   ## rsync assets
   system2(
     "rsync", args = c(
       "-r", 
-      "--exclude" = exclude,
-      read_config()$assets,
-      Sys.getenv(project$remote)
+      exclude,
+      assets,
+      remote
     )
   )
 }

@@ -1,13 +1,18 @@
 pull <- function(project) {
+  project <- load_project(project)
+  dotenv::load_dot_env()
   # rsync from remote, except assets
-  exclude <- sprintf('--exclude="%s"', read_config()$assets)
+  local <- normalizePath(project$local)
+  local_parent_dir <- sprintf("%s/..", local) |> normalizePath()
+  remote <- normalizePath(Sys.getenv(project$remote))
+  exclude <- sprintf('--exclude="%s"', basename(read_config()$assets))
   system2(
     "rsync", args = c(
-      "-r", 
+      "-ar", 
       "--delete", 
-      "--exclude" = exclude,
-      Sys.getenv(project$remote), 
-      project$local
+      "--exclude" = '--exclude "assets"',
+      remote, 
+      local_parent_dir
     )
   )
 }
