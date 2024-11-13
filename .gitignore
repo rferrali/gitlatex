@@ -1,6 +1,11 @@
 # Package
 README_files
 README.html
+/assets
+gitlatex.lock
+/remote
+/.env
+/tex
 
 # History files
 .Rhistory
