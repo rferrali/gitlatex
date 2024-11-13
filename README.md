@@ -15,3 +15,5 @@ remotes::install_github("rferrali/gitlatex")
 ## Usage
 
 Use `gitlatex::init()` to initialize gitlatex in a new or existing project. 
+
+## How does this work? 
