@@ -1,3 +1,3 @@
 init <- function() {
-  print("initializing")
+  file.copy(list.files("./data", full.names = TRUE), "./", recursive = TRUE)
 }
