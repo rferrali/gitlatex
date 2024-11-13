@@ -2,8 +2,9 @@
     "assets": "./assets",
     "projects": [
         {
+            "name": "article",
             "local": "./tex/article",
-            "remote": "ARTICLE"
+            "remote": "GITLATEX_ARTICLE"
         }
     ]
 }
