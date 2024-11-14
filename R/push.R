@@ -1,5 +1,10 @@
 push <- function(project) {
   project <- load_project(project)
+  # error
+  ## no remote
+  stopifnot(dir.exists(project$remote_normalized))
+  ## no local
+  stopifnot(dir.exists(project$local_normalized))
   # warn
   ## not on main
   # TODO

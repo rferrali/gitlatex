@@ -1,6 +1,10 @@
 pull <- function(project) {
   project <- load_project(project)
-  dotenv::load_dot_env()
+  # error
+  ## no remote
+  stopifnot(dir.exists(project$remote_normalized))
+  ## no local
+  stopifnot(dir.exists(project$local_normalized))
   # warn
   ## changes -> offer to commit
   # rsync from remote, except assets

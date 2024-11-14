@@ -10,9 +10,9 @@ read_config <- function() {
     # augment with secrets and local path info
     project$remote <- Sys.getenv(sprintf("GITLATEX_PROJECT_%s", project$name))
     project$remote_normalized <- normalizePath(project$remote)
-    project$remote_parent <- normalizePath(sprintf("%s/..", project$remote_normalized))
+    project$remote_parent <- normalizePath(file.path(project$remote_normalized, ".."))
     project$local_normalized <- normalizePath(project$local)
-    project$local_parent <- normalizePath(sprintf("%s/..", project$local_normalized))
+    project$local_parent <- normalizePath(file.path(project$local_normalized, ".."))
     # check
       ## check existence of project paths
     # TODO

@@ -28,3 +28,5 @@ push("article")
 # pull 
 init_test()
 pull("article")
+init_test()
+create("report")
