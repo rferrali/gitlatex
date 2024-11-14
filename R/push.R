@@ -3,9 +3,13 @@ push <- function(project) {
   dotenv::load_dot_env()
   # warn
   ## not on main
+  # TODO
   ## not on latest commit
+  # TODO
   ## some files in remote are not in local (except LaTeX build files)
+  # TODO
   ## some files in remote are different from local and more recent
+  # TODO
   # push
   ## rsync from local, except assets
   local <- normalizePath(project$local)

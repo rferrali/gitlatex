@@ -1,6 +1,8 @@
 pull <- function(project) {
   project <- load_project(project)
   dotenv::load_dot_env()
+  # warn
+  ## changes -> offer to commit
   # rsync from remote, except assets
   local <- normalizePath(project$local)
   local_parent_dir <- sprintf("%s/..", local) |> normalizePath()

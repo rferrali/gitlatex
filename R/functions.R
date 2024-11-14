@@ -1,6 +1,7 @@
 read_config <- function() {
   config <- jsonlite::read_json("./gitlatex.lock")
-  config$assets_normalized <- normalizePath(config$assets)
+  # check schema
+  # TODO
   return(config)
 }
 
