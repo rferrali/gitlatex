@@ -11,7 +11,7 @@ init <- function(remote_default) {
   }
   # if exists, check schema
   if(exists) {
-    config <- read_config() # read_config errors if schema wrong
+    config <- read_config() # TODO: read_config errors if schema wrong
     ## if schema wrong, fix
     # TODO
   }

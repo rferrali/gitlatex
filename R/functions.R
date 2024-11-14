@@ -17,7 +17,13 @@ read_config <- function() {
       ## check existence of project paths
     # TODO
       ## in local, create symlinks to assets if missing
-    # TODO
+      wd <- getwd()
+      assets <- normalizePath(config$assets)
+      setwd(project$local_normalized)
+      if(!file.exists("assets")) {
+        assets_fullpath <- assets
+        file.symlink(assets_fullpath, "assets")
+      }
     return(project)
   })
   return(config)
