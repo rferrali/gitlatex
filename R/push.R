@@ -1,6 +1,5 @@
 push <- function(project) {
   project <- load_project(project)
-  dotenv::load_dot_env()
   # warn
   ## not on main
   # TODO
@@ -12,9 +11,6 @@ push <- function(project) {
   # TODO
   # push
   ## rsync from local, except assets
-  local <- normalizePath(project$local)
-  remote <- normalizePath(Sys.getenv(project$remote))
-  remote_parent_dir <- sprintf("%s/..", remote) |> normalizePath()
   assets <- normalizePath(read_config()$assets)
   exclude <- sprintf('--exclude="%s"', basename(read_config()$assets))
   system2(
@@ -22,17 +18,17 @@ push <- function(project) {
       "-ar", 
       "--delete", 
       exclude,
-      local,
-      remote_parent_dir
+      project$local_normalized,
+      project$remote_parent
     )
   )
   ## rsync assets
   system2(
     "rsync", args = c(
       "-r", 
-      exclude,
+      "--delete",
       assets,
-      remote
+      project$remote_normalized
     )
   )
 }

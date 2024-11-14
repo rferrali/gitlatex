@@ -11,7 +11,7 @@ init <- function() {
     return()
   }
   # if exists, check schema
-  config <- read_config()
+  config <- read_config() # read_config errors if schema wrong
   ## if schema wrong, fix
   # TODO
 }

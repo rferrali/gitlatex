@@ -1,10 +1,10 @@
 {
     "assets": "./assets",
+    "local_default": "./tex",
     "projects": [
         {
             "name": "article",
-            "local": "./tex/article",
-            "remote": "GITLATEX_ARTICLE"
+            "local": "./tex/article"
         }
     ]
 }
