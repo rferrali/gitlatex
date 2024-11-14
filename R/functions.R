@@ -3,9 +3,10 @@ read_config <- function() {
   # check schema
   valid_lock <- jsonvalidate::json_validate(
     json = "./gitlatex.lock",
-    schema = "./R/lockfile.schema.json",
+    schema = LOCKFILE_SCHEMA,
     engine = "ajv",
-    greedy = TRUE
+    greedy = TRUE,
+    verbose = TRUE
   )
   ## if schema invalid, error, TODO
   config <- jsonlite::read_json("./gitlatex.lock")
