@@ -6,7 +6,7 @@ pull <- function(project) {
   ## no local
   stopifnot(dir.exists(project$local_normalized))
   # warn
-  ## changes -> offer to commit
+  ## changes -> offer to commit, TODO
   # rsync from remote, except assets
   exclude <- sprintf('--exclude="%s"', basename(read_config()$assets))
   system2(
