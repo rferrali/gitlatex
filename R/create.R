@@ -21,12 +21,12 @@ create <- function(name, remote = NULL, local = NULL) {
   # symlink assets
   wd <- getwd()
   assets <- normalizePath(read_config()$assets)
-  setwd(local)
-  if(!file.exists("assets")) {
-    assets_fullpath <- assets
-    file.symlink(assets_fullpath, "assets")
-  }
-  setwd(wd)
+  withr::with_dir(
+    local, 
+    if(!file.exists("assets")) {
+      file.symlink(assets, "assets")
+    }
+  )
   # add remote to .env
   cat(sprintf('GITLATEX_PROJECT_%s="%s"\n', name, remote), file = ".env", append = TRUE)
   # add project to lockfile

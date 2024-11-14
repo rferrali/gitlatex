@@ -1,8 +1,14 @@
 read_config <- function() {
   dotenv::load_dot_env()
-  config <- jsonlite::read_json("./gitlatex.lock")
   # check schema
-  # TODO
+  valid_lock <- jsonvalidate::json_validate(
+    json = "./gitlatex.lock",
+    schema = "./R/lockfile.schema.json",
+    engine = "ajv",
+    greedy = TRUE
+  )
+  ## if schema invalid, error, TODO
+  config <- jsonlite::read_json("./gitlatex.lock")
   # augment config with secrets
   config$remote_default <- Sys.getenv("GITLATEX_REMOTE_DEFAULT")
   # augment and check projects 
@@ -19,11 +25,13 @@ read_config <- function() {
       ## in local, create symlinks to assets if missing
       wd <- getwd()
       assets <- normalizePath(config$assets)
-      setwd(project$local_normalized)
+    withr::with_dir(
+      project$local_normalized, 
       if(!file.exists("assets")) {
-        assets_fullpath <- assets
-        file.symlink(assets_fullpath, "assets")
+        file.symlink(assets, "assets")
       }
+    )
+      
     return(project)
   })
   return(config)
