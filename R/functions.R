@@ -3,7 +3,7 @@ read_config <- function() {
   # check schema
   valid_lock <- jsonvalidate::json_validate(
     json = "./gitlatex.lock",
-    schema = LOCKFILE_SCHEMA,
+    schema = .LOCKFILE_SCHEMA,
     engine = "ajv",
     greedy = TRUE,
     verbose = TRUE

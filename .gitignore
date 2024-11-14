@@ -6,6 +6,7 @@ gitlatex.lock
 /remote
 /.env
 /tex
+/tests/testthat/tmp
 
 # History files
 .Rhistory
