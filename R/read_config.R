@@ -1,11 +1,12 @@
 read_config <- function(public, private) {
-  # check schema
+  # check existence
   if(!file.exists(public)) {
     stop("Public config file does not exist")
   }
   if(!file.exists(private)) {
     stop("Public config file does not exist")
   }
+  # check schema
   valid_public <- jsonvalidate::json_validate(
     json = public,
     schema = .CONFIG_SCHEMA,
