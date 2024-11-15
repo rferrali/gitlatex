@@ -111,26 +111,7 @@ read_config <- function(public, private) {
     cli::cli_abort(glue::glue("Assets directory not found at {config$assets}"))
   }
   # check that all projects exist
-  test <- test_projects(config$projects)
-  ok <- all(test$local & test$remote)
-  if(!ok) {
-    test <- test[!(test$local & test$remote),]
-    msg <- "Some projects have paths that do not exist"
-    for(i in 1:nrow(test)) {
-      if((!test$local[i]) & (!test$remote[i])) {
-        mini <- "local and remote do not exist"
-      } else if(!test$local[i]) {
-        mini <- "local does not exist"
-      } else if (!test$remote[i]) {
-        mini <- "remote does not exist"
-      }
-      msg <- c(
-        msg, 
-        glue::glue("{test$name[i]}: {mini}")
-      )
-    }
-    cli::cli_warn(msg)
-  }
+  test_projects(config$projects, local = TRUE, remote = TRUE, error = FALSE)
   # return
   return(config)  
 }
