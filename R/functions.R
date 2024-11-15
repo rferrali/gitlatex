@@ -161,7 +161,7 @@ interactive_errors <- function(success, implement, message, confirmation) {
         cli::cli_abort(message)
       } else {
         cli::cli_alert_warning(message)
-        choice <- menu(c("Yes", "No"), title = confirmation)
+        choice <- utils::menu(c("Yes", "No"), title = confirmation)
         if(choice != 1) {
           cli::cli_abort("Aborted by user")
         }

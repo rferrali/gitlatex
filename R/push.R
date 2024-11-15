@@ -38,7 +38,7 @@ push <- function(
   ## not on latest commit
   interactive_errors(
     success = is_up_to_date(),
-    implement = up_to_date,
+    implement = latest,
     message = "The repo is not up to date with master",
     confirmation = "Push anyway? You might be pushing outdated data"
   )

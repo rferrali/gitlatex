@@ -36,7 +36,7 @@ init <- function(
     "*" = glue::glue("Private config: {private}"),
     "*" = glue::glue("Assets directory: {assets}")
   ))
-  choice <- menu(c("Yes", "No"), title = "Initialize gitlatex?")
+  choice <- utils::menu(c("Yes", "No"), title = "Initialize gitlatex?")
   if(choice == 1) {
     cfg <- .CONFIG_EXAMPLE
     cfg$assets <- assets

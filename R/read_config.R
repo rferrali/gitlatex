@@ -42,7 +42,7 @@ read_config <- function(public, private) {
       cli::cli_abort("Private config file does not exist")
     } else {
       cli::cli_alert_warning("Private config file does not exist. Perhaps you moved to a new environment?")
-      choice <- menu(c("Yes", "No"), title = "Create private config file?")
+      choice <- utils::menu(c("Yes", "No"), title = "Create private config file?")
       if(choice == 1) {
         jsonlite::write_json(.CONFIG_PRIVATE_EXAMPLE, private, auto_unbox = TRUE, pretty = TRUE)
         cli::cli_bullets(c(
