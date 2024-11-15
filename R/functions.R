@@ -9,6 +9,12 @@ load_project <- function(project, config) {
   return(this_project)
 }
 
+test_projects <- function(projects) {
+  projects$local <- dir.exists(normalizePath(projects$local))
+  projects$remote <- dir.exists(normalizePath(projects$remote))
+  return(projects)
+}
+
 test_project_paths <- function(project_obj, local = TRUE, remote = TRUE) {
   if(local) {
     stopifnot(dir.exists(project_obj$local_normalized))

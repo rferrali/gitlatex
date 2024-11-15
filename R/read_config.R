@@ -1,42 +1,82 @@
 read_config <- function(public, private) {
-  # check existence
+  # public
+  ## check existence
   if(!file.exists(public)) {
-    stop("Public config file does not exist")
+    cli::cli_abort("Public config file does not exist")
   }
-  if(!file.exists(private)) {
-    stop("Public config file does not exist")
-  }
-  # check schema
+  ## check schema
   valid_public <- jsonvalidate::json_validate(
     json = public,
     schema = .CONFIG_SCHEMA,
     engine = "ajv",
-    greedy = TRUE,
-    verbose = TRUE
-  )
-  valid_private <- jsonvalidate::json_validate(
-    json = public,
-    schema = .CONFIG_SCHEMA,
-    engine = "ajv",
-    greedy = TRUE,
-    verbose = TRUE
+    greedy = FALSE
   )
   if(!valid_public) {
-    stop("Public config file is invalid")
-    # TODO: show errors
+    cli::cli_alert_danger("Public config file is invalid")
+    jsonvalidate::json_validate(
+      json = public,
+      schema = .CONFIG_SCHEMA,
+      engine = "ajv",
+      greedy = TRUE, 
+      error = TRUE
+    )
   }
-  if(!valid_private) {
-    stop("Private config file is invalid")
-    # TODO: show errors
-  }
-  # read config
+  ## read config
   public <- jsonlite::read_json(public)
+  # private
+  ## check existence
+  if(!file.exists(private)) {
+    if(!interactive()) {
+      cli::cli_abort("Private config file does not exist")
+    } else {
+      cli::cli_alert_warning("Private config file does not exist. Perhaps you moved to a new environment?")
+      choice <- menu(c("Yes", "No"), title = "Create private config file?")
+      if(choice == 1) {
+        jsonlite::write_json(.CONFIG_PRIVATE_EXAMPLE, private, auto_unbox = TRUE, pretty = TRUE)
+        cli::cli_bullets(c(
+          "v" = glue::glue("Private config file created at {private}"),
+          "!" = "Please edit the file according to the public config file"
+        ))
+      }
+      cli::cli_alert("Exiting...")
+      return()
+    }
+  }
+  ## check schema
+  valid_private <- jsonvalidate::json_validate(
+    json = private,
+    schema = .CONFIG_PRIVATE_SCHEMA,
+    engine = "ajv",
+    greedy = FALSE
+  )
+  if(!valid_private) {
+    cli::cli_alert_danger("Private config file is invalid")
+    jsonvalidate::json_validate(
+      json = private,
+      schema = .CONFIG_PRIVATE_SCHEMA,
+      engine = "ajv",
+      greedy = TRUE, 
+      error = TRUE
+    )
+  }
+  ## read config
   private <- jsonlite::read_json(private)
   # check that projects are the same
   public_projects <- sort(sapply(public$project, function(x) x$name))
   private_projects <- sort(sapply(private, function(x) x$name))
   if(!identical(public_projects, private_projects)) {
-    stop("Public and private config files do not have the same projects")
+    msg <- c("x" = "Public and private config files do not have the same projects")
+    no_public_path <- setdiff(private_projects, public_projects) 
+    if(length(no_public_path) > 0) {
+      no_public_path <- paste(no_public_path, collapse = ", ")
+      msg <- c(msg, glue::glue("These projects have no local path: {no_public_path}"))
+    }
+    no_private_path <- setdiff(public_projects, private_projects) 
+    if(length(no_private_path) > 0) {
+      no_private_path <- paste(no_private_path, collapse = ", ")
+      msg <- c(msg, glue::glue("These projects have no remote path: {no_private_path}"))
+    }
+    cli::cli_abort(msg)
   }
   # create config
   public_projects <- do.call(
@@ -68,16 +108,28 @@ read_config <- function(public, private) {
   )
   # check that all paths exist
   if(!dir.exists(config$assets)) {
-    stop("Assets directory does not exist")
+    cli::cli_abort(glue::glue("Assets directory not found at {config$assets}"))
   }
-  for(i in 1:nrow(config$projects)) {
-    project <- config$projects[i,]
-    if(!dir.exists(project$local)) {
-      warning(sprintf("Project %s: Local project directory does not exist", project$name))
+  # check that all projects exist
+  test <- test_projects(config$projects)
+  ok <- all(test$local & test$remote)
+  if(!ok) {
+    test <- test[!(test$local & test$remote),]
+    msg <- "Some projects have paths that do not exist"
+    for(i in 1:nrow(test)) {
+      if((!test$local[i]) & (!test$remote[i])) {
+        mini <- "local and remote do not exist"
+      } else if(!test$local[i]) {
+        mini <- "local does not exist"
+      } else if (!test$remote[i]) {
+        mini <- "remote does not exist"
+      }
+      msg <- c(
+        msg, 
+        glue::glue("{test$name[i]}: {mini}")
+      )
     }
-    if(!dir.exists(project$remote)) {
-      warning(sprintf("Project %s: Remote project directory does not exist", project$name))
-    }
+    cli::cli_warn(msg)
   }
   # return
   return(config)  

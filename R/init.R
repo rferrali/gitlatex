@@ -16,8 +16,8 @@ init <- function(
   if(any(exists)) {
     stop("gitlatex has already been initialized")
   }
-  cli::cli_inform(c(
-    "The following files will be created:",
+  cli::cli_bullets(c(
+    "i" = "The following files will be created:",
     "*" = glue::glue("Public config: {public}"),
     "*" = glue::glue("Private config: {private}"),
     "*" = glue::glue("Assets directory: {assets}")
