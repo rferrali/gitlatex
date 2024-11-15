@@ -1,0 +1,26 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "config",
+    "title": "gitlatex config",
+    "description": "The gitlatex private config file",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "description": "The name of the project",
+                "type": "string"
+            },
+            "remote": {
+                "description": "The remote path to the project",
+                "type": "string"
+            }
+        },
+        "required": [
+            "name",
+            "remote"
+        ]
+    },
+    "minItems": 0,
+    "uniqueItems": true
+}

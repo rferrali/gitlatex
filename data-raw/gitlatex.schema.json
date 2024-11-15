@@ -9,10 +9,6 @@
             "description": "The path to the assets directory, relative to project root",
             "type": "string"
         },
-        "local_default": {
-            "description": "The path to the default local tex projects library",
-            "type": "string"
-        },
         "projects": {
             "description": "The list of projects to sync",
             "type": "array",
@@ -38,7 +34,6 @@
         }
     },
     "required": [
-        "assets",
-        "local_default"
+        "assets"
     ]
 }

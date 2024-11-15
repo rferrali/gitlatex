@@ -1,5 +1,5 @@
-push <- function(project) {
-  project <- load_project(project)
+push <- function(project, config) {
+  project <- load_project(project, config)
   # error
   ## no remote
   stopifnot(dir.exists(project$remote_normalized))
@@ -16,8 +16,8 @@ push <- function(project) {
   # TODO
   # push
   ## rsync from local, except assets
-  assets <- normalizePath(read_config()$assets)
-  exclude <- sprintf('--exclude="%s"', basename(read_config()$assets))
+  assets <- normalizePath(config$assets)
+  exclude <- sprintf('--exclude="%s"', basename(config$assets))
   system2(
     "rsync", args = c(
       "-ar", 

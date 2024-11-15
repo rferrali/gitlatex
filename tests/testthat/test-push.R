@@ -1,8 +1,9 @@
 test_that("push works", {
   init_test()
   withr::local_dir(test_path("tmp"))
-  push("article")
+  config <- read_config("./gitlatex.json", "./gitlatex.private.json")
+  push("article", config)
   expect_equal(
-    list.files("tex/article"), 
-    list.files("remote/article"))
+    sort(c("assets", list.files("tex/article"))), 
+    sort(list.files("remote/article")))
 })

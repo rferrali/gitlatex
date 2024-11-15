@@ -1,5 +1,5 @@
-pull <- function(project) {
-  project <- load_project(project)
+pull <- function(project, config) {
+  project <- load_project(project, config)
   # error
   ## no remote
   stopifnot(dir.exists(project$remote_normalized))
@@ -8,7 +8,7 @@ pull <- function(project) {
   # warn
   ## changes -> offer to commit, TODO
   # rsync from remote, except assets
-  exclude <- sprintf('--exclude="%s"', basename(read_config()$assets))
+  exclude <- sprintf('--exclude="%s"', basename(config$assets))
   system2(
     "rsync", args = c(
       "-ar", 

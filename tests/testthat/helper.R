@@ -10,7 +10,6 @@ init_test <- function() {
     recursive = TRUE, 
     overwrite = TRUE
   )
-  file.rename(test_path("tmp", "env"), test_path("tmp", ".env"))
 }
 # init
 # clear()
