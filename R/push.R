@@ -1,10 +1,26 @@
+#' Push changes to remote project directories
+#' 
+#' @description Pushes changes to remote project directories. 
+#' 
+#' @param config The config object, should be read using [read_config()]
+#' @param projects A character vector of project names. If `NULL`, all projects will be pushed.
+#' @param main Should we test that the repo is on the main branch before pushing? (default: `TRUE`)
+#' @param latest Should we test that the repo is up to date with master before pushing? (default: `TRUE`)
+#' @param in_local Should we test that all files in remote are also in local? (default: `TRUE`; this ignores LaTeX build files)
+#' @param more_recent Should we test that all files in local are more recent than in remote? (default: `TRUE`)
+#' 
+#' @details
+#' The logical parameters issue warnings when turned off. 
+#' If turned on, they issue errors in non-interactive sessions and ask for user confirmation in interactive sessions.
+#' 
+#' @export
+
 push <- function(
   config, 
   projects = NULL, 
   main = TRUE, 
   latest = TRUE, 
-  up_to_date = TRUE,
-  no_local = TRUE, 
+  in_local = TRUE, 
   more_recent = TRUE
 ) {
   projects <- load_projects(projects, config)
@@ -30,15 +46,15 @@ push <- function(
   remote_in_local <- is_remote_in_local(projects, config$assets)
   interactive_errors(
     success = remote_in_local,
-    implement = no_local,
+    implement = in_local,
     message = attr(remote_in_local, "message"),
     confirmation = "Push anyway? Those files will be deleted."
   )
   ## some files in remote are different from local and more recent
   remote_less_recent <- is_remote_less_recent(projects, config$assets)
   interactive_errors(
-    success = remote_in_local,
-    implement = no_local,
+    success = remote_less_recent,
+    implement = more_recent,
     message = attr(remote_less_recent, "message"),
     confirmation = "Push anyway? Those files will be deleted."
   )

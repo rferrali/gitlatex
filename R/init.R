@@ -1,3 +1,17 @@
+#' Initialize gitlatex
+#' 
+#' @description Initializes gitlatex in a new or existing project, by creating the relevant config files and directories.
+#' 
+#' @param public Path to the public config file (default: `./gitlatex.json`)
+#' @param private Path to the private config file (default: `./gitlatex.private.json`)
+#' @param assets Path to the assets directory (default: `./assets`)
+#' 
+#' 
+#' @import cli
+#' @import jsonlite
+#' @import glue
+#' @export
+
 init <- function(
   public = "./gitlatex.json", 
   private = "./gitlatex.private.json", 

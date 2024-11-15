@@ -1,3 +1,17 @@
+#' Pull changes from remote project directories
+#' 
+#' @description Pulls changes from remote project directories. 
+#' 
+#' @param config The config object, should be read using [read_config()]
+#' @param projects A character vector of project names. If `NULL`, all projects will be pulled.
+#' @param uncommitted Should we test that the repo has no uncommitted changes before pulling? (default: `TRUE`)
+#' 
+#' @details
+#' The logical parameter issues warnings when turned off. 
+#' If turned on, they issue errors in non-interactive sessions and ask for user confirmation in interactive sessions.
+#' 
+#' @export
+
 pull <- function(
   config, 
   projects = NULL, 

@@ -1,3 +1,13 @@
+#' Create symlinks to the assets directory
+#' 
+#' @description Creates symlinks to the assets directory in each project local directory
+#' 
+#' @param config The config object, should be read using [read_config()]
+#' @param projects A character vector of project names. If `NULL`, all projects will be linked.
+#' 
+#' @import withr
+#' @export
+
 link_to_assets <- function(config, projects = NULL) {
   projects <- load_projects(projects, config)
   cli::cli_inform(glue::glue("Making symlinks for {nrow(projects)} project(s)"))

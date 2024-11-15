@@ -1,3 +1,15 @@
+#' Read gitlatex config files
+#' 
+#' @description Reads the public and private config files for gitlatex. Those are created using [init()].
+#' 
+#' @param public Path to the public config file (default: `./gitlatex.json`)
+#' @param private Path to the private config file (default: `./gitlatex.private.json`)
+#' 
+#' @return A config object to be used by other functions
+#' 
+#' @import jsonvalidate
+#' @export
+
 read_config <- function(public, private) {
   # public
   ## check existence
