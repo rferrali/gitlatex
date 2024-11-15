@@ -3,6 +3,7 @@ pull <- function(project, config) {
   # error
   test_project_paths(project, local = TRUE, remote = TRUE)
   # warn
+  is_warning_unstaged <- warn_unstaged()
   ## changes -> offer to commit, TODO
   # rsync from remote, except assets
   exclude <- sprintf('--exclude="%s"', basename(config$assets))

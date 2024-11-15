@@ -17,3 +17,11 @@ test_project_paths <- function(project, local = TRUE, remote = TRUE) {
     stopifnot(dir.exists(project$remote_normalized))
   }
 }
+
+warn_unstaged <- function() {
+  test <- system2("git", c("status", "--porcelain"), stdout = TRUE)
+  if(length(test) > 0) {
+    warning("There are unstaged changes in the repository")
+  }
+  return(test)
+}
