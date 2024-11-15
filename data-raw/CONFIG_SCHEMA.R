@@ -1,6 +1,21 @@
 ## code to prepare `CONFIG_SCHEMA` goes here
 .CONFIG_SCHEMA <- readLines("./data-raw/gitlatex.schema.json")
 .CONFIG_PRIVATE_SCHEMA <- readLines("./data-raw/gitlatex.private.schema.json")
+.CONFIG_EXAMPLE <- list(
+  assets = "./assets",
+  projects = list(
+    list(
+      name = "example",
+      local = "./tex/example"
+    )
+  )
+)
+.CONFIG_PRIVATE_EXAMPLE <- list(
+  list(
+    name = "example",
+    remote = "/path/to/remote/example"
+  )
+)
 
 ## Core latex/pdflatex auxiliary files:
 .LATEX_BUILD_FILES <- c(
@@ -134,6 +149,8 @@
 .LATEX_BUILD_FILES <- sprintf("^.*(%s)$", .LATEX_BUILD_FILES)
 
 usethis::use_data(
-  .CONFIG_SCHEMA, .CONFIG_PRIVATE_SCHEMA, .LATEX_BUILD_FILES,
+  .CONFIG_SCHEMA, .CONFIG_PRIVATE_SCHEMA, 
+  .CONFIG_EXAMPLE, .CONFIG_PRIVATE_EXAMPLE,
+  .LATEX_BUILD_FILES,
   internal = TRUE, overwrite = TRUE
 )
