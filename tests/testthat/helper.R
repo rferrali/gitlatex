@@ -11,17 +11,3 @@ init_test <- function() {
     overwrite = TRUE
   )
 }
-# init
-# clear()
-# init()
-# load_project
-# init_test()
-# identical(load_project("article"), read_config()$projects[[1]])
-# push
-# init_test()
-# push("article")
-# pull 
-# init_test()
-# pull("article")
-# init_test()
-# create("report")
