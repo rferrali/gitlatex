@@ -9,3 +9,11 @@ load_project <- function(project, config) {
   return(this_project)
 }
 
+test_project_paths <- function(project, local = TRUE, remote = TRUE) {
+  if(local) {
+    stopifnot(dir.exists(project$local_normalized))
+  }
+  if (remote) {
+    stopifnot(dir.exists(project$remote_normalized))
+  }
+}

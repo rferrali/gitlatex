@@ -1,10 +1,7 @@
 pull <- function(project, config) {
   project <- load_project(project, config)
   # error
-  ## no remote
-  stopifnot(dir.exists(project$remote_normalized))
-  ## no local
-  stopifnot(dir.exists(project$local_normalized))
+  test_project_paths(project, local = TRUE, remote = TRUE)
   # warn
   ## changes -> offer to commit, TODO
   # rsync from remote, except assets
