@@ -10,7 +10,10 @@
 #' @import jsonvalidate
 #' @export
 
-read_config <- function(public, private) {
+read_config <- function(
+  public = "./gitlatex.json", 
+  private = "./gitlatex.private.json"
+) {
   # public
   ## check existence
   if(!file.exists(public)) {
