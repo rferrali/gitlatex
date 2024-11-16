@@ -26,7 +26,7 @@ init <- function(
     "private" = file.exists(private),
     "assets" = dir.exists(assets)
   )
-  if(any(exists[-"assets"])) {
+  if(any(exists[-3])) {
     stop("gitlatex has already been initialized")
   }
   msg <- c(
