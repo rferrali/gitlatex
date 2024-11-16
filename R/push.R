@@ -8,10 +8,13 @@
 #' @param latest Should we test that the repo is up to date with master before pushing? (default: `TRUE`)
 #' @param in_local Should we test that all files in remote are also in local? (default: `TRUE`; this ignores LaTeX build files)
 #' @param more_recent Should we test that all files in local are more recent than in remote? (default: `TRUE`)
+#' @param git Should we run the Git tests at all? (default: `TRUE`)
 #' 
 #' @details
 #' The logical parameters issue warnings when turned off. 
 #' If turned on, they issue errors in non-interactive sessions and ask for user confirmation in interactive sessions.
+#' All tests are run, even when turned off. The `git` parameter allows to skip the Git tests altogether. 
+#' This is useful in cases where the local directory is not a Git repo.
 #' 
 #' @export
 
@@ -21,7 +24,8 @@ push <- function(
   main = TRUE, 
   latest = TRUE, 
   in_local = TRUE, 
-  more_recent = TRUE
+  more_recent = TRUE,
+  git = TRUE
 ) {
   projects <- load_projects(projects, config)
   cli::cli_inform(glue::glue("Pushing {nrow(projects)} project(s)"))
@@ -29,19 +33,21 @@ push <- function(
   test <- test_projects(projects, local = TRUE, remote = TRUE, error = TRUE)
   # warnings
   ## not on main
+  if(git) {
   interactive_errors(
     success = is_main(),
     implement = main,
     message = "The repo is not on the main branch",
     confirmation = "Push anyway? You might be pushing outdated data"
-  )
+  )}
   ## not on latest commit
+  if(git) {
   interactive_errors(
     success = is_up_to_date(),
     implement = latest,
     message = "The repo is not up to date with master",
     confirmation = "Push anyway? You might be pushing outdated data"
-  )
+  )}
   ## some files in remote are not in local (except LaTeX build files)
   remote_in_local <- is_remote_in_local(projects, config$assets)
   interactive_errors(

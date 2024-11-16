@@ -4,7 +4,7 @@
 \alias{pull}
 \title{Pull changes from remote project directories}
 \usage{
-pull(config, projects = NULL, uncommitted = TRUE)
+pull(config, projects = NULL, uncommitted = TRUE, git = TRUE)
 }
 \arguments{
 \item{config}{The config object, should be read using \code{\link[=read_config]{read_config()}}}
@@ -12,6 +12,8 @@ pull(config, projects = NULL, uncommitted = TRUE)
 \item{projects}{A character vector of project names. If \code{NULL}, all projects will be pulled.}
 
 \item{uncommitted}{Should we test that the repo has no uncommitted changes before pulling? (default: \code{TRUE})}
+
+\item{git}{Should we run the Git tests at all? (default: \code{TRUE})}
 }
 \description{
 Pulls changes from remote project directories.
@@ -19,4 +21,6 @@ Pulls changes from remote project directories.
 \details{
 The logical parameter issues warnings when turned off.
 If turned on, they issue errors in non-interactive sessions and ask for user confirmation in interactive sessions.
+All tests are run, even when turned off. The \code{git} parameter allows to skip the Git tests altogether.
+This is useful in cases where the local directory is not a Git repo.
 }

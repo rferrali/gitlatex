@@ -10,7 +10,8 @@ push(
   main = TRUE,
   latest = TRUE,
   in_local = TRUE,
-  more_recent = TRUE
+  more_recent = TRUE,
+  git = TRUE
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ push(
 \item{in_local}{Should we test that all files in remote are also in local? (default: \code{TRUE}; this ignores LaTeX build files)}
 
 \item{more_recent}{Should we test that all files in local are more recent than in remote? (default: \code{TRUE})}
+
+\item{git}{Should we run the Git tests at all? (default: \code{TRUE})}
 }
 \description{
 Pushes changes to remote project directories.
@@ -32,4 +35,6 @@ Pushes changes to remote project directories.
 \details{
 The logical parameters issue warnings when turned off.
 If turned on, they issue errors in non-interactive sessions and ask for user confirmation in interactive sessions.
+All tests are run, even when turned off. The \code{git} parameter allows to skip the Git tests altogether.
+This is useful in cases where the local directory is not a Git repo.
 }
