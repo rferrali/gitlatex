@@ -1,12 +1,12 @@
 # gitlatex
 
-gitlatex is motivated by the fact that in many academic projects, some contributors (the coders) write statistical code that produce a series of tables and figures, while others (the writers) only do the writing, using those tables and figures. In such projects, integrated solutions such as Python notebooks are not appropriate, as (1) the writers won't use the statistical softwares, and (2) writing usually requires fine-tuning the layout, requiring the use of advanced solutions such as LaTeX, instead of Markdown turned into LaTeX. These projects typically end up putting everything into a shared folder hosted on cloud storage, and give up on version control. Yet, the project could benefit tremendously from using a version control solution such as Git, to track changes to both the code and the LaTeX. 
+gitlatex is designed to bridge the gap in academic projects where contributors have different roles: some focus on coding and producing tables and figures, while others focus solely on writing. In these cases, integrated solutions like Python notebooks are often unsuitable because (1) writers may not use statistical software, and (2) writing often requires precise formatting that advanced tools like LaTeX can provide, which simple Markdown-to-LaTeX conversions cannot match. Consequently, such projects often resort to cloud storage solutions without version control, missing the advantages of tracking changes in both code and LaTeX.
 
-gitlatex solves this problem. It allows to sync LaTeX projects tracked on a Git repository with folders outside the repository (e.g., on a Dropbox folder). It operates under the assumptions that the Git repository generates a centralized library of tables and figures that are shared among all LaTeX projects. It is an `R` package that provides a series of commands to automate syncing. 
+gitlatex addresses this need by enabling the synchronization of LaTeX projects managed in a Git repository with directories outside the repository (e.g., a Dropbox folder). The package is built with the assumption that the Git repository maintains a central library of shared tables and figures (by default, `./assets`), with each LaTeX project stored in its own folder within the repository (e.g., `./tex/article` for the paper, and `./tex/presentation` for the slides). gitlatex provides R functions to streamline syncing the local copy of each project with their remote counterpart.
 
 ## Installation
 
-Install the latest version of gitlatex package from GitHub with
+Install the latest version of gitlatex package from GitHub with:
 
 ```
 # install.packages("remotes")
@@ -15,6 +15,29 @@ remotes::install_github("rferrali/gitlatex")
 
 ## Usage
 
-Use `gitlatex::init()` to initialize gitlatex in a new or existing project. 
+To get started, use `gitlatex::init()` to set up gitlatex in a new or existing project. By default, the package assumes that tables and figures are stored in the `./assets` directory. Two configuration files are used:
 
-## How does this work? 
+- **Public configuration file** (by default, `./gitlatex.json`): Specifies the path to the assets directory and the local paths of each LaTeX project within the repository.
+- **Private configuration file** (by default, `./gitlatex.private.json`): Indicates the remote paths for each project. This file is unique to each contributor’s environment and should not be committed to the repository.
+
+After initialization, use `gitlatex::push()` to push the latest version of each project to its corresponding remote directory, along with the assets folder. To synchronize the current state of each remote project directory back into the repository, use `gitlatex::pull()`.
+
+gitlatex simplifies collaboration by allowing coders and writers to work seamlessly within their preferred tools while benefiting from the version control and change-tracking capabilities of Git. The `push()` and `pull()` functions are also designed for safe use within a CLI environment, making them ideal for integration with Makefiles or other automation scripts.
+
+```
+library(gitlatex)
+gitlatex::init( # these are the defaults
+    public = "./gitlatex.json",  
+    private = "./gitlatex.private.json", 
+    assets = "./assets"
+)
+# tweak the config files to add your own projects, following the built-in examples
+
+# then, use the functions
+config <- gitlatex::read_config(
+    public = "./gitlatex.json",  
+    private = "./gitlatex.private.json"
+)
+gitlatex::push(config)
+gitlatex::pull(config)
+```
